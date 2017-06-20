@@ -7,8 +7,7 @@ const htmlpath = path.join(__dirname, "./dist/index.html");
 let text = fs.readFileSync(htmlpath).toString();
 let $ = cheerio.load(text);
 let scripts = {
-    "script": "src",
-    "link": "href"
+    "script": "src"
 };
 co(function*() {
         console.log("开始Gzip压缩");
@@ -17,8 +16,7 @@ co(function*() {
             yield $(key).toArray().map(function(ele, index) {
                 return new Promise((resolve, reject) => {
                     let filename = ele.attribs[attr];
-                    let basename = path.basename(filename, path.extname(filename));
-                    let newfilename = path.join(__dirname, `./dist/${basename}.gz`);
+                    let newfilename = path.join(__dirname, `./dist/${filename}.gz`);
                     fs.createReadStream(path.join(__dirname, `./dist/${filename}`))
                         .pipe(zlib.createGzip())
                         .pipe(fs.createWriteStream(newfilename))
@@ -28,7 +26,7 @@ co(function*() {
                         })
                         .on("finish", function() {
                             // console.log("ok");
-                            ele.attribs[attr] = `${basename}.gz`;
+                            ele.attribs[attr] = `${filename}.gz`;
                             resolve();
                         })
                 })
