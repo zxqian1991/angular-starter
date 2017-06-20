@@ -6,7 +6,7 @@ const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 // const webpackMergeDll = webpackMerge.strategy({plugins: 'replace'});
 const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
-
+const bodyParser = require('body-parser');
 /**
  * Webpack Plugins
  */
@@ -29,8 +29,8 @@ const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   HMR: HMR
 });
 
-
-// const DllBundlesPlugin = require('webpack-dll-bundles-plugin').DllBundlesPlugin;
+// const DllBundlesPlugin =
+// require('webpack-dll-bundles-plugin').DllBundlesPlugin;
 
 /**
  * Webpack configuration
@@ -86,7 +86,7 @@ module.exports = function (options) {
       chunkFilename: '[id].chunk.js',
 
       library: 'ac_[name]',
-      libraryTarget: 'var',
+      libraryTarget: 'var'
     },
 
     module: {
@@ -100,7 +100,9 @@ module.exports = function (options) {
          */
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
+          use: [
+            'style-loader', 'css-loader'
+          ],
           include: [helpers.root('src', 'styles')]
         },
 
@@ -111,10 +113,11 @@ module.exports = function (options) {
          */
         {
           test: /\.scss$/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
+          use: [
+            'style-loader', 'css-loader', 'sass-loader'
+          ],
           include: [helpers.root('src', 'styles')]
-        },
-
+        }
       ]
 
     },
@@ -138,41 +141,20 @@ module.exports = function (options) {
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
-          'HMR': METADATA.HMR,
+          'HMR': METADATA.HMR
         }
       }),
 
-      // new DllBundlesPlugin({
-      //   bundles: {
-      //     polyfills: [
-      //       'core-js',
-      //       {
-      //         name: 'zone.js',
-      //         path: 'zone.js/dist/zone.js'
-      //       },
-      //       {
-      //         name: 'zone.js',
-      //         path: 'zone.js/dist/long-stack-trace-zone.js'
-      //       },
-      //     ],
-      //     vendor: [
-      //       '@angular/platform-browser',
-      //       '@angular/platform-browser-dynamic',
-      //       '@angular/core',
-      //       '@angular/common',
-      //       '@angular/forms',
-      //       '@angular/http',
-      //       '@angular/router',
-      //       '@angularclass/hmr',
-      //       'rxjs',
-      //     ]
-      //   },
-      //   dllDir: helpers.root('dll'),
-      //   webpackConfig: webpackMergeDll(commonConfig({env: ENV}), {
-      //     devtool: 'cheap-module-source-map',
-      //     plugins: []
-      //   })
-      // }),
+      // new DllBundlesPlugin({   bundles: {     polyfills: [       'core-js',       {
+      //         name: 'zone.js',         path: 'zone.js/dist/zone.js'       },
+      // {         name: 'zone.js',         path:
+      // 'zone.js/dist/long-stack-trace-zone.js'       },     ],     vendor: [
+      // '@angular/platform-browser',       '@angular/platform-browser-dynamic',
+      // '@angular/core',       '@angular/common',       '@angular/forms',
+      // '@angular/http',       '@angular/router',       '@angularclass/hmr',
+      // 'rxjs',     ]   },   dllDir: helpers.root('dll'),   webpackConfig:
+      // webpackMergeDll(commonConfig({env: ENV}), {     devtool:
+      // 'cheap-module-source-map',     plugins: []   }) }),
 
       /**
        * Plugin: AddAssetHtmlPlugin
@@ -182,10 +164,9 @@ module.exports = function (options) {
        *
        * See: https://github.com/SimenB/add-asset-html-webpack-plugin
        */
-      // new AddAssetHtmlPlugin([
-      //   { filepath: helpers.root(`dll/${DllBundlesPlugin.resolveFile('polyfills')}`) },
-      //   { filepath: helpers.root(`dll/${DllBundlesPlugin.resolveFile('vendor')}`) }
-      // ]),
+      // new AddAssetHtmlPlugin([   { filepath:
+      // helpers.root(`dll/${DllBundlesPlugin.resolveFile('polyfills')}`) },   {
+      // filepath: helpers.root(`dll/${DllBundlesPlugin.resolveFile('vendor')}`) } ]),
 
       /**
        * Plugin: NamedModulesPlugin (experimental)
@@ -200,13 +181,7 @@ module.exports = function (options) {
        *
        * See: https://gist.github.com/sokra/27b24881210b56bbaff7
        */
-      new LoaderOptionsPlugin({
-        debug: true,
-        options: {
-
-        }
-      }),
-
+      new LoaderOptionsPlugin({debug: true, options: {}})
     ],
 
     /**
@@ -222,9 +197,7 @@ module.exports = function (options) {
       host: METADATA.host,
       historyApiFallback: true,
       watchOptions: {
-        // if you're using Docker you may need this
-        // aggregateTimeout: 300,
-        // poll: 1000,
+        // if you're using Docker you may need this aggregateTimeout: 300, poll: 1000,
         ignored: /node_modules/
       },
       /**
@@ -232,11 +205,12 @@ module.exports = function (options) {
       *
       * See: https://webpack.github.io/docs/webpack-dev-server.html
       */
-      setup: function(app) {
-        // For example, to define custom handlers for some paths:
-        // app.get('/some/path', function(req, res) {
-        //   res.json({ custom: 'response' });
-        // });
+      setup: function (app) {
+        // For example, to define custom handlers for some paths: app.get('/some/path',
+        // function(req, res) {   res.json({ custom: 'response' }); });
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({extended: false}));
+        mockServer.handleRestServer(app, helpers.root("./server/rest"));
       }
     },
 

@@ -30,9 +30,9 @@ const ngcWebpack = require('ngc-webpack');
 const HMR = helpers.hasProcessFlag('hot');
 const AOT = process.env.BUILD_AOT || helpers.hasNpmFlag('aot');
 const METADATA = {
-  title: 'Angular2 Webpack Starter by @gdi2290 from @AngularClass',
-  baseUrl: '/',
-  isDevServer: helpers.isWebpackDevServer(),
+  title: 'Angular2 Webpack构建项目',
+  // baseUrl: '/',  // 考虑有嵌套、并且不知道如何嵌套的情况，着了暂不使用
+  isDevServer: helpers.isWebpackDevServer(), // 判断是不是devserver
   HMR: HMR
 };
 
@@ -244,17 +244,17 @@ module.exports = function (options) {
       /**
        * This enables tree shaking of the vendor modules
        */
-      // new CommonsChunkPlugin({
-      //   name: 'vendor',
-      //   chunks: ['main'],
-      //   minChunks: module => /node_modules/.test(module.resource)
-      // }),
+      new CommonsChunkPlugin({
+        name: 'vendor',
+        chunks: ['main'],
+        minChunks: module => /node_modules/.test(module.resource)
+      }),
       /**
        * Specify the correct order the scripts will be injected in
        */
-      // new CommonsChunkPlugin({
-      //   name: ['polyfills', 'vendor'].reverse()
-      // }),
+      new CommonsChunkPlugin({
+        name: ['polyfills', 'vendor'].reverse()
+      }),
       // new CommonsChunkPlugin({
       //   name: ['manifest'],
       //   minChunks: Infinity,
@@ -290,9 +290,9 @@ module.exports = function (options) {
        */
       new CopyWebpackPlugin([
         { from: 'src/assets', to: 'assets' },
-        { from: 'src/meta'}
+        // { from: 'src/meta'}
       ],
-        isProd ? { ignore: [ 'mock-data/**/*' ] } : undefined
+        // isProd ? { ignore: [ 'mock-data/**/*' ] } : undefined
       ),
 
       /*
