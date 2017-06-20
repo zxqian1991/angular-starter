@@ -1,3 +1,4 @@
+import { Http } from '@angular/http';
 /**
  * Angular 2 decorators and services
  */
@@ -7,6 +8,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { AppState } from './app.service';
+import { UnionDateService, UnionDate } from './union-module/services/date.service';
+import { UnionUtilService } from './union-module/services/util.service';
 
 /**
  * App Component
@@ -64,8 +67,13 @@ export class AppComponent implements OnInit {
   public url = 'https://twitter.com/AngularClass';
 
   constructor(
-    public appState: AppState
-  ) {}
+    public appState: AppState,
+    public $http: Http,
+    public $util: UnionUtilService,
+    public $date: UnionDateService
+  ) {
+    console.log($date.getCalendarInfo())
+  }
 
   public ngOnInit() {
     console.log('Initial App State', this.appState.state);
