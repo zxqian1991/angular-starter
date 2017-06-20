@@ -289,9 +289,9 @@ module.exports = function (options) {
        * See: https://www.npmjs.com/package/copy-webpack-plugin
        */
       new CopyWebpackPlugin([
-        { from: 'src/assets', to: 'assets' },
+        { from: 'src/assets', to: 'assets' }
         // { from: 'src/meta'}
-      ],
+      ]
         // isProd ? { ignore: [ 'mock-data/**/*' ] } : undefined
       ),
 
@@ -321,12 +321,12 @@ module.exports = function (options) {
        *
        * See: https://github.com/numical/script-ext-html-webpack-plugin
        */
-      new ScriptExtHtmlWebpackPlugin({
-        sync: /polyfill|vendor/,
-        defaultAttribute: 'async',
-        preload: [/polyfill|vendor|main/],
-        prefetch: [/chunk/]
-      }),
+      // new ScriptExtHtmlWebpackPlugin({
+      //   sync: /polyfill|vendor/,
+      //   defaultAttribute: 'async',
+      //   preload: [/polyfill|vendor|main/],
+      //   prefetch: [/chunk/]
+      // }),
 
       /*
       * Plugin: HtmlWebpackPlugin
@@ -367,7 +367,7 @@ module.exports = function (options) {
        * Dependencies: HtmlWebpackPlugin
        */
       new HtmlElementsPlugin({
-        headTags: require('./head-config.common')
+        // headTags: require('./head-config.common')
       }),
 
       /**

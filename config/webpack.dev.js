@@ -7,6 +7,7 @@ const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 // const webpackMergeDll = webpackMerge.strategy({plugins: 'replace'});
 const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
 const bodyParser = require('body-parser');
+const mockServer = require("qzx-mock-rest-server");
 /**
  * Webpack Plugins
  */
@@ -14,6 +15,7 @@ const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+var CompressionPlugin = require("compression-webpack-plugin");
 
 /**
  * Webpack Constants
@@ -144,15 +146,13 @@ module.exports = function (options) {
           'HMR': METADATA.HMR
         }
       }),
-
       // new DllBundlesPlugin({   bundles: {     polyfills: [       'core-js',       {
-      //         name: 'zone.js',         path: 'zone.js/dist/zone.js'       },
-      // {         name: 'zone.js',         path:
-      // 'zone.js/dist/long-stack-trace-zone.js'       },     ],     vendor: [
-      // '@angular/platform-browser',       '@angular/platform-browser-dynamic',
-      // '@angular/core',       '@angular/common',       '@angular/forms',
-      // '@angular/http',       '@angular/router',       '@angularclass/hmr',
-      // 'rxjs',     ]   },   dllDir: helpers.root('dll'),   webpackConfig:
+      //         name: 'zone.js',         path: 'zone.js/dist/zone.js'       }, {
+      // name: 'zone.js',         path: 'zone.js/dist/long-stack-trace-zone.js'   },
+      // ],     vendor: [ '@angular/platform-browser',
+      // '@angular/platform-browser-dynamic', '@angular/core', '@angular/common',
+      // '@angular/forms', '@angular/http', '@angular/router', '@angularclass/hmr',
+      // 'rxjs',     ]   },   dllDir: helpers.root('dll'), webpackConfig:
       // webpackMergeDll(commonConfig({env: ENV}), {     devtool:
       // 'cheap-module-source-map',     plugins: []   }) }),
 
