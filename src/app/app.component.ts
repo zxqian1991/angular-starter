@@ -44,7 +44,7 @@ import { UnionUtilService } from './union-module/services/util.service';
         About
       </a>
     </nav>
-
+    <div union-bubble-1 union-bubble >a;sl,d;l</div>
     <main>
       <router-outlet></router-outlet>
     </main>
@@ -69,16 +69,16 @@ export class AppComponent implements OnInit {
   constructor(
     public appState: AppState,
     public $http: Http,
-    public $util: UnionUtilService,
     public $date: UnionDateService
   ) {
-    console.log($date.getCalendarInfo())
+    // console.log($date.seperateCalendarLists($date.getCalendar()));
+    console.log($date.getCalendarLists(2017,5))
   }
 
   public ngOnInit() {
     console.log('Initial App State', this.appState.state);
   }
-
+  date: Date = new Date();
 }
 
 /**

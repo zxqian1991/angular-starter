@@ -1,15 +1,18 @@
 import {NgModule} from '@angular/core';
+import { UnionBubbleDirective, UnionBubble1Directive } from './directives/bubble.directive';
+import { UnionTestPipe, UnionTesttPipe } from './pipe/test.pipe';
 import { UnionDateService } from './services/date.service';
-import { UnionUtilService } from './services/util.service';
 @NgModule({
     bootstrap: [
 
     ],
     declarations: [
-        
+        // UnionBubble1Directive,
+        // UnionBubbleDirective,
     ],
     exports: [
-
+        // UnionBubble1Directive, // 这里有先后顺序
+        // UnionBubbleDirective
     ],
     /**
    * Import Angular's modules.
@@ -21,7 +24,6 @@ import { UnionUtilService } from './services/util.service';
    * Expose our Services and Providers into Angular's dependency injection.
    */
     providers: [
-        UnionUtilService,
         UnionDateService
     ]
 })
